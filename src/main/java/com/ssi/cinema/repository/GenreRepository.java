@@ -2,7 +2,7 @@ package com.ssi.cinema.repository;
 
 import com.ssi.cinema.entity.Genre;
 import com.ssi.cinema.exception.genre.CreateNewGenreEmptyNameException;
-import com.ssi.cinema.exception.genre.CreatingNewGenreException;
+import com.ssi.cinema.exception.genric.CreatingNewObjectException;
 import com.ssi.cinema.exception.genric.DeleteObjectException;
 import com.ssi.cinema.exception.genric.GetSingleObjectException;
 import com.ssi.cinema.exception.genric.GettingObjectsException;
@@ -42,8 +42,9 @@ public class GenreRepository extends CommonRepository {
             log.info("Genre successfully created!");
         } catch (Exception e) {
             log.error("Error while saving genre!", e);
-            throw new CreatingNewGenreException("There was a problem while creating new Genre!");
+            throw new CreatingNewObjectException("There was a problem while creating new Genre!");
         } finally {
+            session.close();
             factory.close();
         }
     }
@@ -70,10 +71,36 @@ public class GenreRepository extends CommonRepository {
             log.error("Error while getting genres from database!", e);
             throw new GettingObjectsException("There was a problem while processing genres from database! " + e);
         } finally {
+            session.close();
             factory.close();
         }
 
         return genres;
+    }
+
+    public Genre getGenreById(int id) {
+        SessionFactory factory = new Configuration()
+                .configure()
+                .addAnnotatedClass(Genre.class)
+                .buildSessionFactory();
+        Session session = factory.getCurrentSession();
+
+        Genre genre;
+
+        log.info("Getting genre with id " + id + " from database...");
+        try {
+            session.beginTransaction();
+            genre = session.get(Genre.class, id);
+        } catch (Exception e) {
+            log.error("Error while getting genre with id " + id +" from database!", e);
+            throw new GetSingleObjectException("Error while getting genre with id " + id +" from database!");
+        } finally {
+            session.close();
+            factory.close();
+        }
+        log.info("Successfully get genre with id " + id + " from database!");
+
+        return genre;
     }
 
     public void deleteGenre(int id) {
@@ -82,27 +109,20 @@ public class GenreRepository extends CommonRepository {
                 .addAnnotatedClass(Genre.class)
                 .buildSessionFactory();
         Session session = factory.getCurrentSession();
-        session.beginTransaction();
 
-        Genre genre;
-        log.info("Getting genre with id " + id + " from database...");
-        try {
-            genre = session.get(Genre.class, id);
-        } catch (Exception e) {
-            log.error("Error while getting genre with id " + id +" from database!", e);
-            throw new GetSingleObjectException("Error while getting genre with id " + id +" from database!");
-        }
+        Genre genre = getGenreById(id);
 
-        log.info("Successfully get genre with id " + id + " from database!");
         log.info("Deleting genre with id " + id + " from database...");
 
         try {
+            session.beginTransaction();
             session.delete(genre);
             session.getTransaction().commit();
         } catch (Exception e) {
             log.error("Error while deleting genre with id " + id +" from database!", e);
             throw new DeleteObjectException("Error while getting genre with id " + id +" from database!");
         } finally {
+            session.close();
             factory.close();
         }
 

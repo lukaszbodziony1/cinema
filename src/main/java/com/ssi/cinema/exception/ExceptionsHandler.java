@@ -1,7 +1,7 @@
 package com.ssi.cinema.exception;
 
 import com.ssi.cinema.exception.genre.CreateNewGenreEmptyNameException;
-import com.ssi.cinema.exception.genre.CreatingNewGenreException;
+import com.ssi.cinema.exception.genric.CreatingNewObjectException;
 import com.ssi.cinema.exception.genric.DeleteObjectException;
 import com.ssi.cinema.exception.genric.GetSingleObjectException;
 import com.ssi.cinema.exception.genric.GettingObjectsException;
@@ -22,10 +22,10 @@ public class ExceptionsHandler {
     }
 
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-    @ExceptionHandler(CreatingNewGenreException.class)
+    @ExceptionHandler(CreatingNewObjectException.class)
     public ResponseEntity<String> handleCreateNewGenreException() {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body("There was a problem while creating new Genre, it won't be save!");
+                .body("There was a problem while creating new Object, it won't be save!");
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
