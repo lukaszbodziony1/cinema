@@ -35,4 +35,8 @@ public class MovieService {
         Movie movie = repository.getMovieById(id);
         return mapper.toMovie(movie);
     }
+
+    public void deleteMovie(int id) {
+        repository.deleteMovie(id);
+    }
 }
