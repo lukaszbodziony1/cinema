@@ -15,6 +15,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.authorizeRequests().antMatchers("/genre/add").authenticated();
+//        http.authorizeRequests().antMatchers("/genre/add").authenticated(); TODO Change when Spring Security will be configured
     }
 }
