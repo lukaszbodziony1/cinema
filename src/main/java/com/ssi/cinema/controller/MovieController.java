@@ -6,6 +6,7 @@ import com.ssi.cinema.request.movie.AddMovieRequest;
 import com.ssi.cinema.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,5 +48,13 @@ public class MovieController {
 
         return ResponseEntity.ok()
                 .body(movie);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<String> deleteMovie(@PathVariable int id) {
+        service.deleteMovie(id);
+
+        return ResponseEntity.ok()
+                .body("Successfully deleted movie with id " + id);
     }
 }

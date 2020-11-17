@@ -3,6 +3,7 @@ package com.ssi.cinema.repository;
 import com.ssi.cinema.entity.Genre;
 import com.ssi.cinema.entity.Movie;
 import com.ssi.cinema.exception.genric.CreatingNewObjectException;
+import com.ssi.cinema.exception.genric.DeleteObjectException;
 import com.ssi.cinema.exception.genric.GetSingleObjectException;
 import com.ssi.cinema.exception.genric.GettingObjectsException;
 import com.ssi.cinema.request.common.CommonGetRequest;
@@ -116,5 +117,32 @@ public class MovieRepository extends CommonRepository {
         log.info("Successfully get movie with id " + id + " from database!");
 
         return movie;
+    }
+
+    public void deleteMovie(int id) {
+        SessionFactory factory = new Configuration()
+                .configure()
+                .addAnnotatedClass(Movie.class)
+                .addAnnotatedClass(Genre.class)
+                .buildSessionFactory();
+        Session session = factory.getCurrentSession();
+
+        Movie movie = getMovieById(id);
+
+        log.info("Deleting movie with id " + id + " from database...");
+
+        try {
+            session.beginTransaction();
+            session.delete(movie);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            log.error("Error while deleting movie with id " + id +" from database!", e);
+            throw new DeleteObjectException("Error while getting movie with id " + id +" from database!");
+        } finally {
+            session.close();
+            factory.close();
+        }
+
+        log.info("Movie with id " + id + " successfully deleted!");
     }
 }
