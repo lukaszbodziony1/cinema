@@ -2,6 +2,8 @@ package com.ssi.cinema.exception;
 
 import com.ssi.cinema.exception.genre.CreateNewGenreEmptyNameException;
 import com.ssi.cinema.exception.genre.CreatingNewGenreException;
+import com.ssi.cinema.exception.genric.DeleteObjectException;
+import com.ssi.cinema.exception.genric.GetSingleObjectException;
 import com.ssi.cinema.exception.genric.GettingObjectsException;
 import com.ssi.cinema.exception.genric.WrongOrderNameException;
 import org.springframework.http.HttpStatus;
@@ -39,5 +41,19 @@ public class ExceptionsHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("There was a problem while processing objects from database! " +
                         "You have to pass proper order_name property! (asc or desc)");
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(GetSingleObjectException.class)
+    public ResponseEntity<String> handleGetSingleObjectException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("There was a problem while processing object from database!");
+    }
+
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(DeleteObjectException.class)
+    public ResponseEntity<String> handleDeleteObjectException() {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("There was a problem while deleting object from database!");
     }
 }
