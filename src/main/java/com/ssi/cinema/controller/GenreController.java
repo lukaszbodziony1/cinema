@@ -6,6 +6,8 @@ import com.ssi.cinema.request.genre.AddGenreRequest;
 import com.ssi.cinema.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,5 +41,13 @@ public class GenreController {
 
         return ResponseEntity.ok()
                 .body(genres);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteGenre(@PathVariable int id) {
+        service.deleteGenre(id);
+
+        return ResponseEntity.ok()
+                .body("Successfully deleted genre with id " + id);
     }
 }

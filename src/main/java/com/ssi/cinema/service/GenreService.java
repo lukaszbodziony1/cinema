@@ -30,4 +30,8 @@ public class GenreService {
         List<Genre> genres = repository.getAllGenres(request);
         return mapper.toGenreDto(genres);
     }
+
+    public void deleteGenre(int id) {
+        repository.deleteGenre(id);
+    }
 }
