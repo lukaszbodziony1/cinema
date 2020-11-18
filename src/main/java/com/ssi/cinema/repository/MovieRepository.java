@@ -6,8 +6,10 @@ import com.ssi.cinema.exception.genric.CreatingNewObjectException;
 import com.ssi.cinema.exception.genric.DeleteObjectException;
 import com.ssi.cinema.exception.genric.GetSingleObjectException;
 import com.ssi.cinema.exception.genric.GettingObjectsException;
+import com.ssi.cinema.exception.genric.UpdateObjectException;
 import com.ssi.cinema.request.common.CommonGetRequest;
 import com.ssi.cinema.request.movie.AddMovieRequest;
+import com.ssi.cinema.request.movie.UpdateMovieRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -137,12 +139,51 @@ public class MovieRepository extends CommonRepository {
             session.getTransaction().commit();
         } catch (Exception e) {
             log.error("Error while deleting movie with id " + id +" from database!", e);
-            throw new DeleteObjectException("Error while getting movie with id " + id +" from database!");
+            throw new DeleteObjectException("Error while deleting movie with id " + id +" from database!");
         } finally {
             session.close();
             factory.close();
         }
 
         log.info("Movie with id " + id + " successfully deleted!");
+    }
+
+    public void updateMovie(UpdateMovieRequest request) {
+        SessionFactory factory = new Configuration()
+                .configure()
+                .addAnnotatedClass(Movie.class)
+                .addAnnotatedClass(Genre.class)
+                .buildSessionFactory();
+        Session session = factory.getCurrentSession();
+
+        Movie movie = getMovieById(request.getId());
+        if(movie == null) {
+            log.error("Movie with id " + request.getId() + " not exists!");
+            throw new GetSingleObjectException("Movie with id " + request.getId() + " not exists!");
+        }
+
+        Genre genre = genreRepository.getGenreById(request.getGenreId());
+
+        movie.setTitle(request.getTitle());
+        movie.setPremiere(request.getPremiere());
+        movie.setDirector(request.getDirector());
+        movie.setMinAge(request.getMinAge());
+        movie.setGenre(genre);
+
+        log.info("Updating movie with id " + request.getId() + " from database...");
+
+        try {
+            session.beginTransaction();
+            session.update(movie);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            log.error("Error while updating movie with id " + request.getId() +" from database!", e);
+            throw new UpdateObjectException("Error while updating movie with id " + request.getId() +" from database!");
+        } finally {
+            session.close();
+            factory.close();
+        }
+
+        log.info("Movie with id " + request.getId() + " successfully updated!");
     }
 }
