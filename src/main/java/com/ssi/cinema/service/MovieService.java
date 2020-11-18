@@ -6,6 +6,7 @@ import com.ssi.cinema.mapper.MovieMapper;
 import com.ssi.cinema.repository.MovieRepository;
 import com.ssi.cinema.request.common.CommonGetRequest;
 import com.ssi.cinema.request.movie.AddMovieRequest;
+import com.ssi.cinema.request.movie.UpdateMovieRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,9 @@ public class MovieService {
 
     public void deleteMovie(int id) {
         repository.deleteMovie(id);
+    }
+
+    public void updateMovie(UpdateMovieRequest request) {
+        repository.updateMovie(request);
     }
 }

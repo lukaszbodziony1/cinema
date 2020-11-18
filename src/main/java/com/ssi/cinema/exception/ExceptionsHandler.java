@@ -5,6 +5,7 @@ import com.ssi.cinema.exception.genric.CreatingNewObjectException;
 import com.ssi.cinema.exception.genric.DeleteObjectException;
 import com.ssi.cinema.exception.genric.GetSingleObjectException;
 import com.ssi.cinema.exception.genric.GettingObjectsException;
+import com.ssi.cinema.exception.genric.UpdateObjectException;
 import com.ssi.cinema.exception.genric.WrongOrderNameException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +56,12 @@ public class ExceptionsHandler {
     public ResponseEntity<String> handleDeleteObjectException() {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body("There was a problem while deleting object from database!");
+    }
+
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(UpdateObjectException.class)
+    public ResponseEntity<String> handleUpdateObjectException() {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("There was a problem while updating object!");
     }
 }

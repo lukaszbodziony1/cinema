@@ -3,6 +3,7 @@ package com.ssi.cinema.controller;
 import com.ssi.cinema.dto.MovieDto;
 import com.ssi.cinema.request.common.CommonGetRequest;
 import com.ssi.cinema.request.movie.AddMovieRequest;
+import com.ssi.cinema.request.movie.UpdateMovieRequest;
 import com.ssi.cinema.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,11 +52,19 @@ public class MovieController {
                 .body(movie);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteMovie(@PathVariable int id) {
         service.deleteMovie(id);
 
         return ResponseEntity.ok()
                 .body("Successfully deleted movie with id " + id);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateMovie(@RequestBody UpdateMovieRequest request) {
+        service.updateMovie(request);
+
+        return ResponseEntity.ok()
+                .body("Successfully updated movie with id " + request.getId());
     }
 }
