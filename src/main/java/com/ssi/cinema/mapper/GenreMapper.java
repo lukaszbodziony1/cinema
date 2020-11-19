@@ -13,7 +13,7 @@ public class GenreMapper {
         return genre.stream().map(this::toGenreDto).collect(Collectors.toList());
     }
 
-    private GenreDto toGenreDto(Genre genre) {
+    public GenreDto toGenreDto(Genre genre) {
         return GenreDto.builder()
                 .id(genre.getId())
                 .name(genre.getName())

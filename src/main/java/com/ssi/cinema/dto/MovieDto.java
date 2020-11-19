@@ -15,6 +15,5 @@ public class MovieDto {
     private String director;
     @JsonProperty("min_age")
     private int minAge;
-    @JsonProperty("genre_id")
-    private int genreId;
+    private GenreDto genre;
 }
