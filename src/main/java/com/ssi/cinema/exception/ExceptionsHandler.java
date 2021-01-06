@@ -7,6 +7,8 @@ import com.ssi.cinema.exception.genric.GetSingleObjectException;
 import com.ssi.cinema.exception.genric.GettingObjectsException;
 import com.ssi.cinema.exception.genric.UpdateObjectException;
 import com.ssi.cinema.exception.genric.WrongOrderNameException;
+import com.ssi.cinema.exception.user.LoginFailedException;
+import com.ssi.cinema.exception.user.UserExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -63,5 +65,19 @@ public class ExceptionsHandler {
     public ResponseEntity<String> handleUpdateObjectException() {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body("There was a problem while updating object!");
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(LoginFailedException.class)
+    public ResponseEntity<String> handleLoginFailedException() {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body("Login or password is wrong!");
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(UserExistsException.class)
+    public ResponseEntity<String> handleUSerExistsException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("User with given login exists!");
     }
 }
