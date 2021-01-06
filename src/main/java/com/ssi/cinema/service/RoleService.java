@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class RoleService {
-    RoleRepository repository;
+    private final RoleRepository repository;
 
     @Autowired
     RoleService(RoleRepository repository) {
