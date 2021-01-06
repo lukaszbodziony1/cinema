@@ -5,6 +5,7 @@ import com.ssi.cinema.entity.Movie;
 import com.ssi.cinema.entity.Role;
 import com.ssi.cinema.entity.User;
 import com.ssi.cinema.exception.genric.CreatingNewObjectException;
+import com.ssi.cinema.exception.genric.DeleteObjectException;
 import com.ssi.cinema.exception.genric.GettingObjectsException;
 import com.ssi.cinema.exception.genric.UpdateObjectException;
 import com.ssi.cinema.request.common.CommonGetRequest;
@@ -198,7 +199,7 @@ public class UserRepository extends CommonRepository {
             session.getTransaction().commit();
         } catch (Exception e) {
             log.error("Error while deleting user with id " + user.getId() +"!", e);
-            throw new UpdateObjectException("Error while deleting user with id " + user.getId() +"!");
+            throw new DeleteObjectException("Error while deleting user with id " + user.getId() +"!");
         } finally {
             session.close();
             factory.close();
